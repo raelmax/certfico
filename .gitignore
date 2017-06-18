@@ -1,4 +1,4 @@
 .python-version
 *.egg-info
-*.py
+*.pyc
 __pycache__
