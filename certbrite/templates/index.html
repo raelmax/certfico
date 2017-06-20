@@ -37,7 +37,8 @@
         </div>
         <div class="form-group">
           <label for="certificate-text">Texto do certificado</label>
-          <textarea id="certificate-text" class="form-control" name="certificate-text" cols="5" rows="3">Certificamos que [Participante] participou do [Congresso] nos dias [Data] na cidade do [Cidade] com carga horária total de [Carga Horária] horas.</textarea>
+          <textarea id="certificate-text" class="form-control" name="certificate-text" cols="5" rows="3">Certificamos que [participante] participou do CongressoABC no dia 10 de junho na cidade de São Paulo com carga horária total de 6 horas.</textarea>
+          <p class="help-block">A marcação [participante] será trocada pelo nome de cada participante do seu evento.</p>
         </div>
         <div class="form-group">
           <label for="certificate-signature">Assinatura</label>
@@ -49,7 +50,7 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-body">
-              <iframe id="preview-canvas" type="application/pdf" src="" width="100%" height="500" border="0"></iframe>
+              <iframe id="preview-canvas" type="application/pdf" src="" style="width: 100%; height: 500px; border: none;"></iframe>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -65,8 +66,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
     <script>
       var CertBrite = (function() {
-        var form = $('#certificate-form'),
-            inputLogo = $('#certificate-logo'),
+        var inputLogo = $('#certificate-logo'),
             inputText = $('#certificate-text'),
             previewButton = $('#preview-button'),
             previewCanvas = $('#preview-canvas'),
@@ -90,7 +90,7 @@
             var reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
-              fileDataURL = e.target.result;
+              logoDataURL = e.target.result;
             };
           }
         };
@@ -108,10 +108,11 @@
           var doc = new jsPDF({orientation: 'landscape'}),
               splitedText = doc.splitTextToSize(inputText.val(), 200);
 
-          doc.text(splitedText, 50, 100);
+          doc.setFontSize(20);
+          doc.text(splitedText, 35, 100);
 
-          if (fileDataURL) {
-            doc.addImage(fileDataURL, 'PNG', 15, 40, 180, 180);
+          if (logoDataURL) {
+            doc.addImage(logoDataURL, 'PNG', 115, 30);
           }
 
           return doc;
