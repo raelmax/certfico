@@ -26,40 +26,30 @@
     <![endif]-->
   </head>
   <body>
-    {% block page %}
     <div class="container">
       <div class="page-header">
         <h1>Gerador de certificados</h1>
       </div>
-      {% block content %}
-      <form action="/preview" method="POST">
+      <form id="certificate-form" method="POST">
+        <div class="form-group">
+          <label for="certificate-logo">Logo</label>
+          <input id="certificate-logo" class="form-control" name="certificate-logo" type="file">
+        </div>
         <div class="form-group">
           <label for="certificate-text">Texto do certificado</label>
           <textarea id="certificate-text" class="form-control" name="certificate-text" cols="5" rows="3">Certificamos que [Participante] participou do [Congresso] nos dias [Data] na cidade do [Cidade] com carga horária total de [Carga Horária] horas.</textarea>
         </div>
         <div class="form-group">
-          <label>Escolha o tema</label>
-          <div class="row">
-            <div class="col-xs-6 col-md-3">
-              <div class="thumbnail">
-                <img src="http://placehold.it/300x300" alt="Tema 1">
-                <div class="caption">
-                  <label>
-                    <input type="radio" name="certificate-theme" value="theme-1" checked="checked" />
-                    Padrão
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
+          <label for="certificate-signature">Assinatura</label>
+          <input id="certificate-signature" class="form-control" name="certificate-signature" type="file">
         </div>
-        <input id="preview-button" class="btn btn-primary" type="button" value="visualizar certificado" />
+        <input id="preview-button" class="btn btn-primary" type="button" value="visualizar certificado">
       </form>
-      <div class="modal fade" tabindex="-1" role="dialog">
+      <div id="preview-modal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-body">
-              <iframe id="pdf_preview" type="application/pdf" src="" width="100%" height="500" border="0"></iframe>
+              <iframe id="preview-canvas" type="application/pdf" src="" width="100%" height="500" border="0"></iframe>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
@@ -67,25 +57,71 @@
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
-      {% endblock %}
     </div>
-    {% endblock %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
     <script>
-      $(document).ready(function() {
-        $('#preview-button').click(function(e) {
-          var doc = new jsPDF({
-            orientation: 'landscape'
-          });
-          var splitedText = doc.splitTextToSize($('#certificate-text').val(), 200);
+      var CertBrite = (function() {
+        var form = $('#certificate-form'),
+            inputLogo = $('#certificate-logo'),
+            inputText = $('#certificate-text'),
+            previewButton = $('#preview-button'),
+            previewCanvas = $('#preview-canvas'),
+            previewModal = $('#preview-modal'),
+            logoDataURL = null;
+
+        var init = function () {
+          console.log('Initializing application...');
+          setListeners();
+        };
+
+        var setListeners = function() {
+          inputLogo.on('change', onInputLogoChange);
+          previewButton.on('click', onPreviewButtonClick);
+        };
+
+        var onInputLogoChange = function(event) {
+          var file = inputLogo.get(0).files[0];
+
+          if (file) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+              fileDataURL = e.target.result;
+            };
+          }
+        };
+
+        var onPreviewButtonClick = function(event) {
+          var doc = createPDF();
+
+          previewCanvas.attr('src', doc.output('datauristring'));
+          previewModal.modal();
+        };
+
+        var send = function() {};
+
+        var createPDF = function() {
+          var doc = new jsPDF({orientation: 'landscape'}),
+              splitedText = doc.splitTextToSize(inputText.val(), 200);
+
           doc.text(splitedText, 50, 100);
-          $('#pdf_preview').attr('src', doc.output('datauristring'));
-          $('.modal.fade').modal();
-        });
+
+          if (fileDataURL) {
+            doc.addImage(fileDataURL, 'PNG', 15, 40, 180, 180);
+          }
+
+          return doc;
+        };
+
+        return {init: init}
+      })();
+
+      $(document).ready(function() {
+        CertBrite.init();
       });
     </script>
   </body>
