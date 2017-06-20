@@ -26,14 +26,16 @@
     <![endif]-->
   </head>
   <body>
+    {% block page %}
     <div class="container">
       <div class="page-header">
         <h1>Gerador de certificados</h1>
       </div>
-      <form action="." method="POST">
+      {% block content %}
+      <form action="/preview" method="POST">
         <div class="form-group">
           <label for="certificate-text">Texto do certificado</label>
-          <textarea id="certificate-text" class="form-control" cols="5" rows="3">Certificamos que [Participante] participou do [Congresso] nos dias [Data] na cidade do [Cidade] com carga horária total de [Carga Horária] horas.</textarea>
+          <textarea id="certificate-text" class="form-control" name="certificate-text" cols="5" rows="3">Certificamos que [Participante] participou do [Congresso] nos dias [Data] na cidade do [Cidade] com carga horária total de [Carga Horária] horas.</textarea>
         </div>
         <div class="form-group">
           <label>Escolha o tema</label>
@@ -43,48 +45,23 @@
                 <img src="http://placehold.it/300x300" alt="Tema 1">
                 <div class="caption">
                   <label>
-                    <input type="radio" name="certificate-theme" value="theme-1" />
+                    <input type="radio" name="certificate-theme" value="theme-1" checked="checked" />
                     Padrão
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-6 col-md-3">
-              <div class="thumbnail">
-                <img src="http://placehold.it/300x300" alt="Tema 2">
-                <div class="caption">
-                  <label>
-                    <input type="radio" name="certificate-theme" value="theme-2" />
-                    Verde
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-6 col-md-3">
-              <div class="thumbnail">
-                <img src="http://placehold.it/300x300" alt="Tema 3">
-                <div class="caption">
-                  <label>
-                    <input type="radio" name="certificate-theme" value="theme-3" />
-                    Azul
                   </label>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!--
-        <div class="form-group">
-          <label>CSV dos participantes</label>
-          <input type="file" name="participants" />
-        </div>
-        -->
         <input class="btn btn-primary" type="submit" value="visualizar certificado" />
       </form>
+      {% endblock %}
     </div>
+    {% endblock %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    {% block extra_js %}{% endblock %}
   </body>
 </html>
