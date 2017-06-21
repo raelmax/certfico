@@ -18,3 +18,7 @@ A simple tool to generate certificates to attendees of EventBrite events.
 - Backend fires emails to users from csv with a small text and a link to certificate page;
 - User download the certificate pdf from client-side.
 - The end.
+
+## Problem
+How create a "theme system"?
+How enable users to 
