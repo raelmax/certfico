@@ -7,7 +7,6 @@ var CertBrite = (function() {
         logoDataURL = null;
 
     var init = function () {
-        console.log('Initializing application...');
         setListeners();
     };
 
@@ -41,6 +40,7 @@ var CertBrite = (function() {
         var doc = new jsPDF({orientation: 'landscape'}),
             splitedText = doc.splitTextToSize(inputText.val().toUpperCase(), 225);
 
+        doc.setTextColor(34, 34, 34);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(34);
         doc.text('CERTIFICADO DE PARTICIPAÇÃO', 50, 80);
@@ -54,7 +54,12 @@ var CertBrite = (function() {
         }
 
         // theme logo
-        doc.addImage(pythonBrasilLogo, 'PNG', 170, 10);
+        doc.addImage(pythonBrasilLogo, 'PNG', 210, 15);
+
+        // signature
+        doc.line(200, 160, 100, 160); // horizontal line
+        doc.setFontSize(14);
+        doc.text('Responsável', 135, 165);
 
         return doc;
     };

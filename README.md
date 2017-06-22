@@ -21,4 +21,5 @@ A simple tool to generate certificates to attendees of EventBrite events.
 
 ## Problem
 How create a "theme system"?
-How enable users to 
+
+How enable users to choose a theme?
