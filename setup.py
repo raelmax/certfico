@@ -1,8 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='certbrite',
-    packages=['certbrite'],
+    name='certifico',
+    version='0.0.1',
+    packages=['certifico'],
     include_package_data=True,
     install_requires=[
         'flask',

@@ -1,0 +1,1 @@
+from .certifico import app
