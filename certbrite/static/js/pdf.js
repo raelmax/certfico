@@ -57,9 +57,11 @@ var CertBrite = (function() {
         doc.addImage(pythonBrasilLogo, 'PNG', 210, 15);
 
         // signature
+        doc.addImage(signature, 'PNG', 105, 150);
         doc.line(200, 160, 100, 160); // horizontal line
         doc.setFontSize(14);
-        doc.text('Responsável', 135, 165);
+        doc.text('Francisco Helton Alves Chaves', 115, 168);
+        doc.text('Organizador da Python Nordeste 2017', 108, 175);
 
         return doc;
     };
