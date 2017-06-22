@@ -1,4 +1,4 @@
-var CertBrite = (function() {
+var Certifico = (function() {
     var inputLogo = $('#certificate-logo'),
         inputText = $('#certificate-text'),
         previewButton = $('#preview-button'),

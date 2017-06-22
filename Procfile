@@ -1,1 +1,1 @@
-web: gunicorn certbrite:app --log-file=-
+web: gunicorn certifico:app --log-file=-
