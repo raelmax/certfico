@@ -6,13 +6,14 @@ var Certifico = (function() {
         previewCanvas = $('#preview-canvas'),
         previewModal = $('#preview-modal');
 
-    var init = function () {
-        setListeners();
-    };
-
-    var setListeners = function() {
+    var preview = function() {
         inputLogo.on('change', onInputLogoChange);
         previewButton.on('click', onPreviewButtonClick);
+    };
+
+    var print = function(eventLogo, eventMessage) {
+        var doc = createPDF(eventLogo, eventMessage);
+        window.location = doc.output('datauristring');
     };
 
     var onInputLogoChange = function(event) {
@@ -28,17 +29,15 @@ var Certifico = (function() {
     };
 
     var onPreviewButtonClick = function(event) {
-        var doc = createPDF();
+        var doc = createPDF(inputLogoValue.val(), inputMessage.val());
 
         previewCanvas.attr('src', doc.output('datauristring'));
         previewModal.modal();
     };
 
-    var send = function() {};
-
-    var createPDF = function() {
+    var createPDF = function(eventLogo, eventMessage) {
         var doc = new jsPDF({orientation: 'landscape'}),
-            splitedText = doc.splitTextToSize(inputMessage.val().toUpperCase(), 225);
+            splitedText = doc.splitTextToSize(eventMessage.toUpperCase(), 225);
 
         doc.setTextColor(34, 34, 34);
         doc.setFont('helvetica', 'bold');
@@ -49,8 +48,8 @@ var Certifico = (function() {
         doc.setFontSize(18);
         doc.text(splitedText, 20, 95);
 
-        if (inputLogoValue.val()) {
-            doc.addImage(inputLogoValue.val(), 'PNG', 20, 10);
+        if (eventLogo) {
+            doc.addImage(eventLogo, 'PNG', 20, 10);
         }
 
         // theme logo
@@ -66,5 +65,5 @@ var Certifico = (function() {
         return doc;
     };
 
-    return {init: init}
+    return {preview: preview, print: print}
 })();
