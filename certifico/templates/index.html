@@ -26,6 +26,7 @@
     <![endif]-->
   </head>
   <body>
+    {% block body %}
     <div class="container">
       <div class="page-header">
         <h1>Criar Certificado</h1>
@@ -63,6 +64,8 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
     </div>
+    {% endblock %}
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
@@ -72,10 +75,12 @@
     <script src="/static/js/pybr_logo.js"></script>
     <script src="/static/js/signature.js"></script>
     <script src="/static/js/pdf.js"></script>
+    {% block js %}
     <script>
       $(document).ready(function() {
         Certifico.init();
       });
     </script>
+    {% endblock %}
   </body>
 </html>

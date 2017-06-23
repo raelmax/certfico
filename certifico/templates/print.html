@@ -1,2 +1,11 @@
-{{ message }}<br><br>
-{{ logo }}
+{% extends "index.html" %}
+{% block body %}{% endblock %}
+
+{% block js %}
+  <script>
+    var logo = '{{ logo }}',
+        message = '{{ message }}';
+
+    Certifico.print(logo, message);
+  </script>
+{% endblock %}
