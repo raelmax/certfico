@@ -1,10 +1,10 @@
 var Certifico = (function() {
     var inputLogo = $('#certificate-logo'),
-        inputText = $('#certificate-text'),
+        inputLogoValue = $('#certificate-logo-value'),
+        inputMessage = $('#certificate-message'),
         previewButton = $('#preview-button'),
         previewCanvas = $('#preview-canvas'),
-        previewModal = $('#preview-modal'),
-        logoDataURL = null;
+        previewModal = $('#preview-modal');
 
     var init = function () {
         setListeners();
@@ -22,7 +22,7 @@ var Certifico = (function() {
             var reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function(e) {
-                logoDataURL = e.target.result;
+                inputLogoValue.val(e.target.result);
             };
         }
     };
@@ -38,7 +38,7 @@ var Certifico = (function() {
 
     var createPDF = function() {
         var doc = new jsPDF({orientation: 'landscape'}),
-            splitedText = doc.splitTextToSize(inputText.val().toUpperCase(), 225);
+            splitedText = doc.splitTextToSize(inputMessage.val().toUpperCase(), 225);
 
         doc.setTextColor(34, 34, 34);
         doc.setFont('helvetica', 'bold');
@@ -49,8 +49,8 @@ var Certifico = (function() {
         doc.setFontSize(18);
         doc.text(splitedText, 20, 95);
 
-        if (logoDataURL) {
-            doc.addImage(logoDataURL, 'PNG', 20, 10);
+        if (inputLogoValue.val()) {
+            doc.addImage(inputLogoValue.val(), 'PNG', 20, 10);
         }
 
         // theme logo

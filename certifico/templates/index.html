@@ -28,23 +28,27 @@
   <body>
     <div class="container">
       <div class="page-header">
-        <h1>Certifico</h1>
+        <h1>Criar Certificado</h1>
       </div>
-      <form id="certificate-form" method="POST">
+      <form action="/send-certificates" id="certificate-form" method="POST">
         <div class="form-group">
           <label for="certificate-logo">Logo</label>
-          <input id="certificate-logo" class="form-control" name="certificate-logo" type="file">
+          <input id="certificate-logo" type="file">
+          <input id="certificate-logo-value" name="logo" type="hidden">
+          <p class="help-block">A logo enviada será usada em tamanho natural.</p>
         </div>
         <div class="form-group">
-          <label for="certificate-text">Texto do certificado</label>
-          <textarea id="certificate-text" class="form-control" name="certificate-text" cols="5" rows="3">Certificamos que [participante] participou do CongressoABC no dia 10 de junho na cidade de São Paulo com carga horária total de 6 horas.</textarea>
+          <label for="certificate-message">Texto do certificado</label>
+          <textarea id="certificate-message" class="form-control" name="message" cols="5" rows="3">Certificamos que [participante] participou do CongressoABC no dia 10 de junho na cidade de São Paulo com carga horária total de 6 horas.</textarea>
           <p class="help-block">A marcação [participante] será trocada pelo nome de cada participante do seu evento.</p>
         </div>
         <div class="form-group">
-          <label for="certificate-signature">Assinatura</label>
-          <input id="certificate-signature" class="form-control" name="certificate-signature" type="file">
+          <label for="certificate-list">Lista de Participantes</label>
+          <textarea id="certificate-list" class="form-control" name="participants" cols="5" rows="5"></textarea>
+          <p class="help-block">Lista no formato "nome do participante,email_do_participante@email.com".</p>
         </div>
-        <input id="preview-button" class="btn btn-primary" type="button" value="visualizar certificado">
+        <input id="preview-button" class="btn btn-primary" type="button" value="Visualizar certificado">
+        <input id="preview-button" class="btn btn-success" type="submit" value="Enviar certificados">
       </form>
       <div id="preview-modal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
