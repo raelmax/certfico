@@ -1,10 +1,12 @@
 from flask import request
 from flask import abort
+from flask import url_for
 from flask import render_template
 
 from bson.objectid import ObjectId
 
 from certifico import app
+from certifico import mail
 from certifico import mongo
 
 @app.route('/', methods=['GET'])
@@ -23,6 +25,15 @@ def create():
         'message': message,
         'participants': participants
     })
+
+    for p in participants:
+        mail.send_email(
+            to_email=p.get('email'),
+            from_email='contato@raelmax.com',
+            subject='Seu certificado esta pronto!',
+            text='Acesse: https://certbrite.herokuapp.com%s?email=%s' % (url_for('print', certificate=certificate), p.get('email')),
+        )
+
     return 'Os certificados do evento %s foram enviados.' % certificate
 
 @app.route('/print/<certificate>/', methods=['GET'])
