@@ -10,6 +10,7 @@ setup(
         'Flask-PyMongo',
         'Flask-SendGrid',
         'sendgrid==3.6.5',
+        'rq',
         'gunicorn'
     ],
 )
