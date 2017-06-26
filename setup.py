@@ -8,8 +8,7 @@ setup(
     install_requires=[
         'flask',
         'Flask-PyMongo',
-        'Flask-SendGrid',
-        'sendgrid==3.6.5',
+        'sendgrid',
         'rq',
         'gunicorn'
     ],
