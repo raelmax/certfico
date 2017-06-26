@@ -6,8 +6,10 @@ from flask import render_template
 from bson.objectid import ObjectId
 
 from certifico import app
-from certifico import mail
 from certifico import mongo
+from certifico import redis_queue
+
+from .mail import send_email
 
 @app.route('/', methods=['GET'])
 def index():
@@ -27,17 +29,19 @@ def create():
     })
 
     for p in participants:
-        mail.send_email(
+        redis_queue.enqueue(send_email,
             to_email=p.get('email'),
             from_email='contato@raelmax.com',
             subject='Seu certificado esta pronto!',
-            text='Acesse: https://certbrite.herokuapp.com%s?email=%s' % (url_for('print', certificate=certificate), p.get('email')),
+            text='Acesse: https://certbrite.herokuapp.com%s?email=%s' % (
+                url_for('print_certificate', certificate=certificate), p.get('email')
+            )
         )
 
     return 'Os certificados do evento %s foram enviados.' % certificate
 
 @app.route('/print/<certificate>/', methods=['GET'])
-def print(certificate):
+def print_certificate(certificate):
     email = request.args.get('email')
 
     if not email:

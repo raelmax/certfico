@@ -1,17 +1,20 @@
 import os
+
+from rq import Queue
+
 from flask import Flask
 from flask_pymongo import PyMongo
-from flask_sendgrid import SendGrid
+
+from certifico.worker import conn
 
 app = Flask(__name__)
 
 if os.environ.get('MONGODB_URI'):
     app.config['MONGO_URI'] = os.environ.get('MONGODB_URI')
 
-app.config['SENDGRID_API_KEY'] = os.environ.get('SENDGRID_API_KEY')
-app.config['SENDGRID_DEFAULT_FROM'] = 'contato@raelmax.com'
+app.config['SENDGRID_API_KEY'] = os.getenv('SENDGRID_API_KEY')
 
-mail = SendGrid(app)
 mongo = PyMongo(app)
+redis_queue = Queue(connection=conn)
 
 import certifico.views
