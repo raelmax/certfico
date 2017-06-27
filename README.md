@@ -19,5 +19,15 @@ A simple tool to generate certificates to attendees of EventBrite events.
 - User download the certificate pdf from client-side.
 - The end.
 
-## Problem
-How create a "theme system"?
+## TODO
+[ ] Email template;
+[ ] Form validations;
+[ ] Tests
+[ ] Created certificate page;
+[x] Refactoring on app configs
+
+- Honcho support
+- Theme system;
+- Login/Register using social networks;
+- See a participants list and resend certificates;
+- Layout improvements;
