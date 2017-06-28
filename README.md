@@ -24,6 +24,7 @@ A simple tool to generate certificates to attendees of EventBrite events.
 [ ] Form validations;
 [ ] Tests
 [ ] Created certificate page;
+[x] Make mail worker a entry point command;
 [x] Refactoring on app configs
 
 - Honcho support
