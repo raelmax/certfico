@@ -17,4 +17,4 @@ mongo = PyMongo(app)
 redis_connection = redis.from_url(app.config.get('REDIS_URI'))
 redis_queue = Queue(connection=redis_connection)
 
-import certifico.views
+from certifico import routes

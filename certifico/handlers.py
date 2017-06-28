@@ -5,17 +5,14 @@ from flask import render_template
 
 from bson.objectid import ObjectId
 
-from certifico import app
 from certifico import mongo
 from certifico import redis_queue
 
 from .mail import send_email
 
-@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
-@app.route('/send-certificates', methods=['POST'])
 def create():
     logo = request.form.get('logo')
     message = request.form.get('message')
@@ -40,7 +37,6 @@ def create():
 
     return 'Os certificados do evento %s foram enviados.' % certificate
 
-@app.route('/print/<certificate>/', methods=['GET'])
 def print_certificate(certificate):
     email = request.args.get('email')
 
