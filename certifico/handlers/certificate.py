@@ -7,13 +7,9 @@ from bson.objectid import ObjectId
 
 from certifico import mongo
 from certifico import redis_queue
+from certifico.mail import send_email
 
-from .mail import send_email
-
-def index():
-    return render_template('index.html')
-
-def create():
+def create_certificate():
     logo = request.form.get('logo')
     message = request.form.get('message')
     participants = request.form.get('participants', '')
