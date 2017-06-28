@@ -12,8 +12,29 @@ from certifico.mail import send_email
 def create_certificate():
     logo = request.form.get('logo')
     message = request.form.get('message')
-    participants = request.form.get('participants', '')
-    participants = [{'name': p.split(',')[0], 'email': p.split(',')[1]} for p in participants.strip().splitlines()]
+    participants = request.form.get('participants')
+
+    if not message:
+        return abort(400, 'You need provide a message to your certificate')
+
+    if not participants:
+        return abort(400, 'You need provide a list of participants')
+
+    participants = participants.strip().splitlines()
+    participants_format = []
+
+    for p in participants:
+        try:
+            person = p.split(',')
+            participants_format.append({
+                'name': person[0],
+                'email': person[1]
+            })
+        except IndexError:
+            pass
+
+    if not len(participants_format):
+        return abort(400, 'You provide a wrong formated participants list')
 
     certificate =  mongo.db.certificates.insert({
         'logo': logo,
@@ -21,7 +42,7 @@ def create_certificate():
         'participants': participants
     })
 
-    for p in participants:
+    for p in participants_format:
         redis_queue.enqueue(send_email,
             to_email=p.get('email'),
             from_email='contato@raelmax.com',
