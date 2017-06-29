@@ -58,5 +58,18 @@ class CreateCertificateTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'You provide a wrong formated participants list', response.data)
 
+    def test_should_save_on_mongodb_if_data_is_correct(self):
+        response = self.client.post('/send-certificates', data={
+            'logo': '123', 'message': 'abc', 'participants': 'rael,joao@fakemail.com'
+        })
+        with app.app_context():
+            certificate = mongo.db.certificates.find_one()
+            self.assertTrue(certificate)
+            self.assertEqual(certificate['logo'], '123')
+            self.assertEqual(certificate['message'], 'abc')
+            self.assertEqual(certificate['participants'],
+                             [{'name': 'rael', 'email': 'joao@fakemail.com'}])
+
+
 class PrintCertificateTestCase(unittest.TestCase):
     pass

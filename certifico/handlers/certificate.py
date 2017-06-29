@@ -36,10 +36,10 @@ def create_certificate():
     if not len(participants_format):
         return abort(400, 'You provide a wrong formated participants list')
 
-    certificate =  mongo.db.certificates.insert({
+    certificate =  mongo.db.certificates.insert_one({
         'logo': logo,
         'message': message,
-        'participants': participants
+        'participants': participants_format
     })
 
     for p in participants_format:
