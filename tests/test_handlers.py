@@ -1,9 +1,11 @@
-import unittest
+from unittest import mock
+from unittest import TestCase
 
 from certifico import app
 from certifico import mongo
+from certifico.mail import send_email
 
-class IndexTestCase(unittest.TestCase):
+class IndexTestCase(TestCase):
     def setUp(self):
         self.client = app.test_client()
         self.response = self.client.get('/')
@@ -25,7 +27,7 @@ class IndexTestCase(unittest.TestCase):
     def test_should_have_a_iframe_to_show_a_preview(self):
         self.assertIn(b'<iframe id="preview-canvas"', self.response.data)
 
-class CreateCertificateTestCase(unittest.TestCase):
+class CreateCertificateTestCase(TestCase):
     def setUp(self):
         self.client = app.test_client()
 
@@ -71,5 +73,20 @@ class CreateCertificateTestCase(unittest.TestCase):
                              [{'name': 'rael', 'email': 'joao@fakemail.com'}])
 
 
-class PrintCertificateTestCase(unittest.TestCase):
+    @mock.patch('certifico.redis_queue.enqueue')
+    def test_should_send_to_redis_queue_the_participants_email_messages(self, enqueue_mock):
+        response = self.client.post('/send-certificates', data={
+            'logo': '123', 'message': 'abc', 'participants': 'rael,joao@fakemail.com'
+        })
+        enqueue_mock.assert_called_once()
+
+        enqueue_mock.reset_mock()
+
+        response = self.client.post('/send-certificates', data={
+            'logo': '123', 'message': 'abc', 'participants': 'rael,joao@fakemail.com\njoao,joao@fakemail2.com'
+        })
+        enqueue_mock.assert_called()
+        self.assertEqual(enqueue_mock.call_count, 2)
+
+class PrintCertificateTestCase(TestCase):
     pass
