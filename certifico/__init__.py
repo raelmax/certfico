@@ -8,6 +8,7 @@ from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 
+app.config['FROM_EMAIL'] = os.getenv('FROM_EMAIL', 'certifico@certifico.dev')
 app.config['SENDGRID_API_KEY'] = os.getenv('SENDGRID_API_KEY')
 app.config['MONGO_URI'] = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
 app.config['REDIS_URI'] = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')

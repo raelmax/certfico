@@ -17,6 +17,9 @@ def create_certificate():
     if not message:
         return abort(400, 'You need provide a message to your certificate')
 
+    if not '[participante]' in message:
+        return abort(400, 'Your message need a [participante] placeholder')
+
     if not participants:
         return abort(400, 'You need provide a list of participants')
 
@@ -45,7 +48,6 @@ def create_certificate():
     for p in participants_format:
         redis_queue.enqueue(send_email,
             to_email=p.get('email'),
-            from_email='contato@raelmax.com',
             subject='Seu certificado esta pronto!',
             text='Acesse: https://certbrite.herokuapp.com%s?email=%s' % (
                 url_for('print_certificate', certificate=certificate), p.get('email')
