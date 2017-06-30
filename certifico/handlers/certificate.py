@@ -5,6 +5,7 @@ from flask import render_template
 
 from bson.objectid import ObjectId
 
+from certifico import app
 from certifico import mongo
 from certifico import redis_queue
 from certifico.mail import send_email
@@ -48,10 +49,7 @@ def create_certificate():
     for p in participants_format:
         redis_queue.enqueue(send_email,
             to_email=p.get('email'),
-            subject='Seu certificado esta pronto!',
-            text='Acesse: https://certbrite.herokuapp.com%s?email=%s' % (
-                url_for('print_certificate', certificate=certificate.inserted_id), p.get('email')
-            )
+            certificateLink=url_for('print_certificate', certificate=certificate.inserted_id, email=p.get('email'), _external=True)
         )
 
     return 'Os certificados do evento %s foram enviados.' % certificate.inserted_id
