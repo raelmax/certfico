@@ -14,6 +14,7 @@ app.config['SENDGRID_API_KEY'] = os.getenv('SENDGRID_API_KEY')
 app.config['MONGO_URI'] = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
 app.config['REDIS_URI'] = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 app.config['SERVER_NAME'] = os.getenv('SERVER_NAME', 'localhost:5000')
+app.config['PREFERRED_URL_SCHEME'] = os.getenv('PREFERRED_URL_SCHEME', 'http')
 
 mongo = PyMongo(app)
 
