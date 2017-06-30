@@ -37,7 +37,7 @@ var Certifico = (function() {
 
     var createPDF = function(eventLogo, eventMessage) {
         var doc = new jsPDF({orientation: 'landscape'}),
-            splitedText = doc.splitTextToSize(eventMessage.toUpperCase(), 225);
+            splitedText = doc.splitTextToSize(eventMessage, 225);
 
         doc.setTextColor(34, 34, 34);
         doc.setFont('helvetica', 'bold');

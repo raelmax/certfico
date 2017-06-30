@@ -50,11 +50,11 @@ def create_certificate():
             to_email=p.get('email'),
             subject='Seu certificado esta pronto!',
             text='Acesse: https://certbrite.herokuapp.com%s?email=%s' % (
-                url_for('print_certificate', certificate=certificate), p.get('email')
+                url_for('print_certificate', certificate=certificate.inserted_id), p.get('email')
             )
         )
 
-    return 'Os certificados do evento %s foram enviados.' % certificate
+    return 'Os certificados do evento %s foram enviados.' % certificate.inserted_id
 
 def print_certificate(certificate):
     email = request.args.get('email')

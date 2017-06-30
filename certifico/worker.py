@@ -1,5 +1,3 @@
-import os
-
 from rq import Worker, Queue, Connection
 
 from certifico import redis_connection

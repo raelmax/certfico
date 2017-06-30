@@ -3,6 +3,6 @@
 
 {% block js %}
   <script>
-    Certifico.print('{{ logo }}', '{{ message }}');
+    Certifico.print('{{ logo }}', '{{ message|safe }}');
   </script>
 {% endblock %}
