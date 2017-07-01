@@ -67,6 +67,6 @@ def print_certificate(certificate):
         return abort(404)
 
     message = certificate.get('message')
-    message = message.replace('[participante]', participant.get('name'))
+    message = message.replace('[participante]', participant.get('name').upper())
 
     return render_template('print.html', logo=certificate.get('logo'), message=message)
