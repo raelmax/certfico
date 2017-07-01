@@ -5,7 +5,6 @@ from flask import render_template
 
 from bson.objectid import ObjectId
 
-from certifico import app
 from certifico import mongo
 from certifico import redis_queue
 from certifico.mail import send_email

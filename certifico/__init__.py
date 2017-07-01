@@ -15,6 +15,7 @@ app.config['MONGO_URI'] = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
 app.config['REDIS_URI'] = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 app.config['SERVER_NAME'] = os.getenv('SERVER_NAME', 'localhost:5000')
 app.config['PREFERRED_URL_SCHEME'] = os.getenv('PREFERRED_URL_SCHEME', 'http')
+app.config['GOOGLE_ANALYTICS'] = os.getenv('GOOGLE_ANALYTICS')
 
 mongo = PyMongo(app)
 
