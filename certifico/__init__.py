@@ -16,6 +16,7 @@ app.config['REDIS_URI'] = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
 app.config['SERVER_NAME'] = os.getenv('SERVER_NAME', 'localhost:5000')
 app.config['PREFERRED_URL_SCHEME'] = os.getenv('PREFERRED_URL_SCHEME', 'http')
 app.config['GOOGLE_ANALYTICS'] = os.getenv('GOOGLE_ANALYTICS')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'very-strong-secret-key')
 
 mongo = PyMongo(app)
 

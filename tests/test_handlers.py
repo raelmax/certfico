@@ -18,11 +18,11 @@ class IndexTestCase(TestCase):
         self.assertIn(b'<input id="preview-button"', self.response.data)
         self.assertIn(b'<input id="submit-button"', self.response.data)
 
-    def test_should_have_specific_form_fields(self):
-        self.assertIn(b'<input id="certificate-logo"', self.response.data)
-        self.assertIn(b'<input id="certificate-logo-value"', self.response.data)
-        self.assertIn(b'<textarea id="certificate-message"', self.response.data)
-        self.assertIn(b'<textarea id="certificate-participants"', self.response.data)
+    def test_should_have_specifics_form_fields(self):
+        self.assertIn(b'id="certificate-logo"', self.response.data)
+        self.assertIn(b'id="certificate-logo-value"', self.response.data)
+        self.assertIn(b'id="certificate-message"', self.response.data)
+        self.assertIn(b'id="certificate-participants"', self.response.data)
 
     def test_should_have_a_iframe_to_show_a_preview(self):
         self.assertIn(b'<iframe id="preview-canvas"', self.response.data)
