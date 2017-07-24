@@ -19,10 +19,11 @@ class IndexTestCase(TestCase):
         self.assertIn(b'<input id="submit-button"', self.response.data)
 
     def test_should_have_specifics_form_fields(self):
-        self.assertIn(b'id="certificate-logo"', self.response.data)
-        self.assertIn(b'id="certificate-logo-value"', self.response.data)
-        self.assertIn(b'id="certificate-message"', self.response.data)
-        self.assertIn(b'id="certificate-participants"', self.response.data)
+        response_data = str(self.response.data,'utf-8')
+        self.assertRegex(response_data, '<input.+name=\"logo_file\"')
+        self.assertRegex(response_data, '<input.+name=\"logo\"')
+        self.assertRegex(response_data, '<textarea.+name=\"message\"')
+        self.assertRegex(response_data, '<textarea.+name=\"participants\"')
 
     def test_should_have_a_iframe_to_show_a_preview(self):
         self.assertIn(b'<iframe id="preview-canvas"', self.response.data)
@@ -68,7 +69,8 @@ class CreateCertificateTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn(b'You provide a wrong formated participants list', response.data)
 
-    def test_should_save_on_mongodb_if_data_is_correct(self):
+    @mock.patch('certifico.redis_queue.enqueue')
+    def test_should_save_on_mongodb_if_data_is_correct(self, enqueue_mock):
         response = self.client.post('/send-certificates', data={
             'logo': '123', 'message': 'abc [participante] def',
             'participants': 'rael,joao@fakemail.com'
