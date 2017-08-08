@@ -2,6 +2,7 @@ var Certifico = (function() {
     var inputLogo = $('#certificate-logo'),
         inputLogoValue = $('#certificate-logo-value'),
         inputMessage = $('#certificate-message'),
+        printCanvas = $('#print-canvas'),
         previewButton = $('#preview-button'),
         previewCanvas = $('#preview-canvas'),
         previewModal = $('#preview-modal');
@@ -13,7 +14,7 @@ var Certifico = (function() {
 
     var print = function(eventLogo, eventMessage) {
         var doc = createPDF(eventLogo, eventMessage);
-        window.location = doc.output('datauristring');
+        printCanvas.attr('src', doc.output('datauristring'));
     };
 
     var onInputLogoChange = function(event) {
