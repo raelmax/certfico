@@ -11,7 +11,7 @@ test:
 
 test_watch:
 ifdef KQWAIT
-	while true; do kqwait tests; make test; done
+	while true; do kqwait tests certifico; make test; done
 else
 	@echo "You need kqwait installed to run this command. :/"
 endif
