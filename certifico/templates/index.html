@@ -52,15 +52,27 @@
           {{ form.logo_file }}
           <p class="help-block">A logo enviada será usada em tamanho natural.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group{% if form.message.errors %} has-error{% endif %}">
           <label for="certificate-message">Texto do certificado</label>
           {{ form.message(class='form-control', cols='5', rows='3')}}
+          {% if form.message.errors %}
+          {% for error_message in form.message.errors %}
+          <p class="help-block">{{ error_message }}</p>
+          {% endfor %}
+          {% else %}
           <p class="help-block">A marcação [participante] será trocada pelo nome de cada participante do seu evento.</p>
+          {% endif %}
         </div>
-        <div class="form-group">
+        <div class="form-group{% if form.participants.errors %} has-error{% endif %}">
           <label for="certificate-participants">Lista de Participantes</label>
           {{ form.participants(class='form-control', cols='5', rows='5')}}
+          {% if form.participants.errors %}
+          {% for error_message in form.participants.errors %}
+          <p class="help-block">{{ error_message }}</p>
+          {% endfor %}
+          {% else %}
           <p class="help-block">Lista no formato "nome do participante,email_do_participante@email.com".</p>
+          {% endif %}
         </div>
         <input id="preview-button" class="btn btn-primary" type="button" value="Visualizar certificado">
         <input id="submit-button" class="btn btn-success" type="submit" value="Enviar certificados">

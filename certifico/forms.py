@@ -13,10 +13,11 @@ class CertificateForm(FlaskForm):
     logo_file = FileField('Logo file', id='certificate-logo')
     logo = HiddenField('Logo', id='certificate-logo-value')
     message = TextAreaField('Message', id='certificate-message',
-        default=DEFAULT_CERTIFICATE_MESSAGE
+        default=DEFAULT_CERTIFICATE_MESSAGE,
+        validators=[validators.required('You need provide a message to your certificate')]
     )
     participants = TextAreaField('Participants', id='certificate-participants',
-        validators=[validators.required()]
+        validators=[validators.required('You need provide a list of participants')]
     )
 
     def validate_message(form, field):
