@@ -10,6 +10,7 @@ from certifico import app
 
 sendgrid = SendGridAPIClient(apikey=app.config.get('SENDGRID_API_KEY'))
 
+
 def send_email(to_email, certificateLink):
     from_email = Email(app.config.get('FROM_EMAIL'))
     to_email = Email(to_email)
@@ -22,6 +23,5 @@ def send_email(to_email, certificateLink):
 
     try:
         sendgrid.client.mail.send.post(request_body=mail.get())
-    except Exception as e:
+    except Exception:
         pass
-

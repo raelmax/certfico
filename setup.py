@@ -13,8 +13,7 @@ setup(
         'rq',
         'gunicorn'
     ],
-    entry_points = {
+    entry_points={
         'console_scripts': ['mail-worker=certifico.worker:main'],
     }
 )
-
