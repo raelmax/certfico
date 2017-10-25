@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from certifico import app
 from certifico import mongo
-from certifico.mail import send_email
+
 
 class IndexTestCase(TestCase):
     def setUp(self):
@@ -19,7 +19,7 @@ class IndexTestCase(TestCase):
         self.assertIn(b'<input id="submit-button"', self.response.data)
 
     def test_should_have_specifics_form_fields(self):
-        response_data = str(self.response.data,'utf-8')
+        response_data = str(self.response.data, 'utf-8')
         self.assertRegex(response_data, '<input.+name=\"logo_file\"')
         self.assertRegex(response_data, '<input.+name=\"logo\"')
         self.assertRegex(response_data, '<textarea.+name=\"message\"')
@@ -27,6 +27,7 @@ class IndexTestCase(TestCase):
 
     def test_should_have_a_iframe_to_show_a_preview(self):
         self.assertIn(b'<iframe id="preview-canvas"', self.response.data)
+
 
 class CreateCertificateTestCase(TestCase):
     def setUp(self):
@@ -45,33 +46,41 @@ class CreateCertificateTestCase(TestCase):
             'logo': '123', 'participants': 'rael,joao@jaoxxyz.com'
         })
         self.assertEqual(response.status_code, 400)
-        self.assertIn(b'You need provide a message to your certificate', response.data)
+        self.assertIn(
+            b'You need provide a message to your certificate',
+            response.data)
 
-    def test_should_return_error_if_message_dont_have_participant_placeholder(self):
+    def test_should_fail_if_message_dont_have_participant_placeholder(self):
         response = self.client.post('/send-certificates', data={
-            'logo': '123', 'message': 'abc def', 'participants': 'rael,joao@jaoxxyz.com'
+            'logo': '123',
+            'message': 'abc def',
+            'participants': 'rael,joao@jaoxxyz.com'
         })
         self.assertEqual(response.status_code, 400)
-        self.assertIn(b'Your message need a [participante] placeholder', response.data)
+        self.assertIn(
+            b'Your message need a [participante] placeholder',
+            response.data)
 
     def test_should_return_error_if_participants_are_not_filled(self):
         response = self.client.post('/send-certificates', data={
             'logo': '123', 'message': 'abc [participante] def'
         })
         self.assertEqual(response.status_code, 400)
-        self.assertIn(b'You need provide a list of participants', response.data)
+        self.assertIn(
+            b'You need provide a list of participants', response.data)
 
-    def test_should_validate_participants_field_to_accept_only_comma_separated_values(self):
+    def test_should_validate_participants_field_to_accept_only_csv(self):
         response = self.client.post('/send-certificates', data={
             'logo': '123', 'message': 'abc [participante] def',
             'participants': 'malformed-participants-list'
         })
         self.assertEqual(response.status_code, 400)
-        self.assertIn(b'You provide a wrong formated participants list', response.data)
+        self.assertIn(
+            b'You provide a wrong formated participants list', response.data)
 
     @mock.patch('certifico.redis_queue.enqueue')
     def test_should_save_on_mongodb_if_data_is_correct(self, enqueue_mock):
-        response = self.client.post('/send-certificates', data={
+        self.client.post('/send-certificates', data={
             'logo': '123', 'message': 'abc [participante] def',
             'participants': 'rael,joao@fakemail.com'
         })
@@ -83,10 +92,9 @@ class CreateCertificateTestCase(TestCase):
             self.assertEqual(certificate['participants'],
                              [{'name': 'rael', 'email': 'joao@fakemail.com'}])
 
-
     @mock.patch('certifico.redis_queue.enqueue')
-    def test_should_send_to_redis_queue_the_participants_email_messages(self, enqueue_mock):
-        response = self.client.post('/send-certificates', data={
+    def test_should_send_to_redis_participants_email_msgs(self, enqueue_mock):
+        self.client.post('/send-certificates', data={
             'logo': '123', 'message': 'abc [participante] def',
             'participants': 'rael,joao@fakemail.com'
         })
@@ -94,12 +102,13 @@ class CreateCertificateTestCase(TestCase):
 
         enqueue_mock.reset_mock()
 
-        response = self.client.post('/send-certificates', data={
+        self.client.post('/send-certificates', data={
             'logo': '123', 'message': 'abc [participante] def',
             'participants': 'rael,joao@fakemail.com\njoao,joao@fakemail2.com'
         })
         enqueue_mock.assert_called()
         self.assertEqual(enqueue_mock.call_count, 2)
+
 
 class PrintCertificateTestCase(TestCase):
     pass

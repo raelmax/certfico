@@ -9,22 +9,31 @@ Certificamos que [participante] participou do CongressoABC
 no dia 10 de junho na cidade de São Paulo com carga horária total de 6 horas.
 '''.strip().replace('\n', ' ')
 
+
 class CertificateForm(FlaskForm):
     logo_file = FileField('Logo file', id='certificate-logo')
     logo = HiddenField('Logo', id='certificate-logo-value')
-    message = TextAreaField('Message', id='certificate-message',
+    message = TextAreaField(
+        'Message',
+        id='certificate-message',
         default=DEFAULT_CERTIFICATE_MESSAGE,
-        validators=[validators.required('You need provide a message to your certificate')]
+        validators=[validators.required(
+            'You need provide a message to your certificate')]
     )
-    participants = TextAreaField('Participants', id='certificate-participants',
-        validators=[validators.required('You need provide a list of participants')]
+    participants = TextAreaField(
+        'Participants',
+        id='certificate-participants',
+        validators=[validators.required(
+            'You need provide a list of participants')]
     )
 
     def validate_message(form, field):
         if field.data == DEFAULT_CERTIFICATE_MESSAGE:
-            raise validators.ValidationError('You need provide a custom text to your form message')
-        elif not '[participante]' in field.data:
-            raise validators.ValidationError('Your message need a [participante] placeholder')
+            raise validators.ValidationError(
+                'You need provide a custom text to your form message')
+        elif '[participante]' not in field.data:
+            raise validators.ValidationError(
+                'Your message need a [participante] placeholder')
 
     def validate_participants(form, field):
         # please, refactor me :(
@@ -39,6 +48,7 @@ class CertificateForm(FlaskForm):
                 pass
 
         if not len(cleared_data):
-            raise validators.ValidationError('You provide a wrong formated participants list')
+            raise validators.ValidationError(
+                'You provide a wrong formated participants list')
 
         form.participants_list = cleared_data

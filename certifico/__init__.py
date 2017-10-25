@@ -6,6 +6,7 @@ from rq import Queue
 from flask import Flask
 from flask_pymongo import PyMongo
 
+
 app = Flask(__name__)
 
 app.config['FROM_EMAIL'] = os.getenv('FROM_EMAIL', 'certifico@certifico.dev')
@@ -23,4 +24,4 @@ mongo = PyMongo(app)
 redis_connection = redis.from_url(app.config.get('REDIS_URI'))
 redis_queue = Queue(connection=redis_connection)
 
-from certifico import routes
+from certifico import routes  # noqa
